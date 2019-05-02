@@ -57,6 +57,10 @@ type stubDiscovery struct {
 	getOrchError error
 }
 
+func (d *stubDiscovery) GetURLs() []*url.URL {
+	return nil
+}
+
 func (d *stubDiscovery) GetOrchestrators(num int) ([]*net.OrchestratorInfo, error) {
 	if d.waitGetOrch != nil {
 		<-d.waitGetOrch

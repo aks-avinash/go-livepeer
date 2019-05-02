@@ -740,23 +740,13 @@ func (s *LivepeerServer) StartWebserver(bindAddr string) {
 	mux.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
 		status := s.GetNodeStatus()
 		if status != nil {
-			mstrs := make(map[string]string, 0)
-			for mid, m := range status.Manifests {
-				mstrs[string(mid)] = m.String()
-			}
-			d := struct {
-				Manifests map[string]string
-				Version   string
-			}{
-				Manifests: mstrs,
-				Version:   core.LivepeerVersion,
-			}
-			if data, err := json.Marshal(d); err == nil {
+			if data, err := json.Marshal(status); err == nil {
 				w.Header().Set("Content-Type", "application/json")
 				w.Write(data)
 				return
 			}
 		}
+		http.Error(w, "Error getting status", http.StatusInternalServerError)
 	})
 
 	mux.HandleFunc("/contractAddresses", func(w http.ResponseWriter, r *http.Request) {
