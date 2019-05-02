@@ -491,8 +491,8 @@ func NewRemoteTranscoder(n *LivepeerNode, stream net.Transcoder_RegisterTranscod
 	}
 }
 
-func NewRemoteTranscoderManager() RemoteTranscoderManager {
-	return RemoteTranscoderManager{
+func NewRemoteTranscoderManager() *RemoteTranscoderManager {
+	return &RemoteTranscoderManager{
 		remoteTranscoders: []*RemoteTranscoder{},
 		liveTranscoders:   map[net.Transcoder_RegisterTranscoderServer]*RemoteTranscoder{},
 		RTmutex:           &sync.Mutex{},
@@ -517,6 +517,7 @@ func (rtm *RemoteTranscoderManager) Register(transcoder *RemoteTranscoder) {
 
 func (rtm *RemoteTranscoderManager) Unregister(t *RemoteTranscoder) {
 	rtm.RTmutex.Lock()
+	// Probably should remove from remoteTranscoders too?
 	delete(rtm.liveTranscoders, t.stream)
 	rtm.RTmutex.Unlock()
 }

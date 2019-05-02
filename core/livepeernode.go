@@ -63,7 +63,7 @@ type LivepeerNode struct {
 	Ipfs              ipfs.IpfsApi
 	OrchSecret        string
 	Transcoder        Transcoder
-	TranscoderManager RemoteTranscoderManager
+	TranscoderManager *RemoteTranscoderManager
 
 	// Broadcaster public fields
 	Sender pm.Sender
