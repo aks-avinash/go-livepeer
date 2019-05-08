@@ -81,7 +81,7 @@ func (o *orchestratorPool) GetOrchestrators(numOrchestrators int) ([]*net.Orches
 	numOrchestrators = int(math.Min(float64(numAvailableOrchs), float64(numOrchestrators)))
 	ctx, cancel := context.WithTimeout(context.Background(), GetOrchestratorsTimeoutLoop)
 	orchInfos := []*net.OrchestratorInfo{}
-	orchChan := make(chan struct{})
+	orchChan := make(chan struct{}, len(o.uris))
 	numResp := 0
 	numSuccessResp := 0
 	respLock := sync.Mutex{}
